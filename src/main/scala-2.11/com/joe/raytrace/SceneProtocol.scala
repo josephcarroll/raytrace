@@ -6,9 +6,9 @@ import spray.json._
 
 object SceneProtocol extends DefaultJsonProtocol {
 
-  def load(): Scene = {
+  def load(location: String): Scene = {
     import spray.json._
-    val jsonSource = io.Source.fromInputStream(Scene.getClass.getResourceAsStream("scene.json")).mkString
+    val jsonSource = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(location)).mkString
     jsonSource.parseJson.convertTo[Scene]
   }
 

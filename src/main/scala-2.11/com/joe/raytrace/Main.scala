@@ -4,7 +4,7 @@ import com.joe.raytrace.Tracer._
 
 object Main extends App {
 
-  val scene = SceneProtocol.load()
+  val scene = SceneProtocol.load(args(0))
   def trace = traceRay(scene) _
 
   val camera = scene.camera
