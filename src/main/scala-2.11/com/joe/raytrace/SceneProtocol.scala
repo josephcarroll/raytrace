@@ -24,8 +24,8 @@ object SceneProtocol extends DefaultJsonProtocol {
   }
 
   implicit val SphereFormat = jsonFormat3(Sphere)
-  implicit val LightFormat = jsonFormat2(Light)
+  implicit val LightFormat  = jsonFormat2(Light)
   implicit val CameraFormat = jsonFormat6(Camera)
-  implicit val SceneFormat = jsonFormat4(Scene.apply)
+  implicit val SceneFormat  = jsonFormat5(Scene.apply)
 
 }

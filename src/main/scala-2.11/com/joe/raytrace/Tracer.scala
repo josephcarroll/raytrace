@@ -14,11 +14,13 @@ object Tracer {
 
     intersectionByDistance.headOption match {
       case Some(intersection) =>
-        val light = scene.lights.head
-        val normal = (intersection.point - intersection.obj.position).normalize
-        val lightRay = (light.position - normal).normalize
-        val colour = Math.max(0, lightRay.dot(normal))
-        intersection.obj.colour * light.colour * colour
+        val lightInput = scene.lights.map { light =>
+          val normal = (intersection.point - intersection.obj.position).normalize
+          val lightRay = (light.position - normal).normalize
+          val intensity = Math.max(0, lightRay.dot(normal))
+          light.colour * intensity
+        }
+        intersection.obj.colour * (lightInput.foldLeft(Vector(0.0, 0.0, 0.0))(_ + _) + scene.ambientLight).cap(1.0)
       case None =>
         scene.backgroundColour
     }
@@ -35,6 +37,10 @@ object Tracer {
     def negate: Vector = Vector(-this.x, -this.y, -this.z)
     def lengthSquared: Double = (x * x) + (y * y) + (z * z)
     def length: Double = Math.sqrt(lengthSquared)
+
+    def cap(t: Double): Vector = Vector(Math.min(this.x, t), Math.min(this.y, t), Math.min(this.z, t))
+    def floor(t: Double): Vector = Vector(Math.max(this.x, t), Math.max(this.y, t), Math.max(this.z, t))
+    def bound(min: Double, max: Double): Vector = floor(min).cap(max)
 
     def dot(that: Vector): Double = {
       val m = this * that
