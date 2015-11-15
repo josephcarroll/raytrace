@@ -6,30 +6,40 @@ import com.joe.raytrace.Tracer._
 
 object RayTracer extends App {
 
+  val background = Vector(0.1, 0.1, 0.1)
   val red = Sphere(Vector(2.0, 2.0, -15.0), 1.0, Vector(1.0, 0.0, 0.0))
   val white = Sphere(Vector(0.0, 0.0, -20.0), 1.0, Vector(1.0, 1.0, 1.0))
   val yellow = Sphere(Vector(-2.0, -2.0, -25.0), 1.0, Vector(1.0, 1.0, 0.0))
-  val objects = Seq(white, red, yellow)
+  val grey = Sphere(Vector(0.0, 0.0, -50.0), 8.0, Vector(0.4, 0.4, 0.4))
+  val objects = Seq(white, red, yellow, grey)
 
   val light = Light(Vector(10.0, 10.0, 5.0), Vector(0.9, 1.0, 0.9))
   val lights = Seq(light)
 
-  val camera = Camera(Ray(Vector(0.0, 0.0, 0.5), Vector(0.0, 0.0, -1.0)), 600, 600)
+  val camera = Camera(Ray(Vector(0.0, 0.0, 0.4), Vector(0.0, 0.0, -1.0)), 600, 600)
 
   val invWidth = 1.0 / camera.width
   val invHeight = 1.0 / camera.height
   val angle = Math.tan(Math.PI * camera.origin.z * camera.fieldOfView / 180.0)
 
   val image = for (x <- 0 until camera.width; y <- 0 until camera.height) yield {
-
     val xx = (2 * ((x + camera.origin.z) * invWidth) - 1) * angle * camera.aspectRatio
     val yy = (1 - 2 * ((y + camera.origin.z) * invHeight)) * angle
     val rayDirection = Vector(xx, yy, camera.direction.z).normalize
     traceRay(Ray(camera.origin, rayDirection))
-
   }
 
-  val bytes = image.flatMap { colour =>
+  val pixels = Array.fill(camera.pixelWidth * camera.pixelHeight)(Vector(0.0, 0.0, 0.0))
+
+  for (x <- 0 until camera.width; y <- 0 until camera.height) {
+    val realIndex = y + (camera.width * x)
+    val index = (y / camera.antialiasing) + (camera.pixelWidth * (x / camera.antialiasing))
+    pixels(index) += image(realIndex)
+  }
+
+  val finalPixels = pixels.map(_ / camera.samplesPerPixel)
+
+  val bytes = finalPixels.flatMap { colour =>
     val r = (255 * colour.x).toByte
     val g = (255 * colour.y).toByte
     val b = (255 * colour.z).toByte
@@ -38,7 +48,7 @@ object RayTracer extends App {
   val f = new File("/Users/Joe/Desktop/result.ppm")
   if(!f.exists()) f.createNewFile()
   val fos = new FileOutputStream(f)
-  fos.write(s"P6\n${camera.width} ${camera.height}\n255\n".getBytes)
+  fos.write(s"P6\n${camera.pixelWidth} ${camera.pixelHeight}\n255\n".getBytes)
   fos.write(bytes.toArray)
   fos.close()
 
@@ -59,7 +69,7 @@ object RayTracer extends App {
         val colour = Math.max(0, lightRay.dot(normal))
         intersection.obj.colour * light.colour * colour
       case None =>
-        Vector(0.0, 0.0, 0.0)
+        background
     }
   }
 
@@ -75,6 +85,7 @@ object Tracer {
     def -(that: Vector): Vector = Vector(this.x - that.x, this.y - that.y, this.z - that.z)
     def *(that: Vector): Vector = Vector(this.x * that.x, this.y * that.y, this.z * that.z)
     def *(constant: T): Vector = Vector(this.x * constant, this.y * constant, this.z * constant)
+    def /(constant: T): Vector = Vector(this.x / constant, this.y / constant, this.z / constant)
 
     def negate: Vector = Vector(-this.x, -this.y, -this.z)
     def lengthSquared: T = (x * x) + (y * y) + (z * z)
@@ -133,7 +144,11 @@ object Tracer {
 
   }
 
-  case class Camera(position: Ray, width: Int, height: Int, fieldOfView: T = 30.0) {
+  case class Camera(position: Ray, pixelWidth: Int, pixelHeight: Int, antialiasing: Int = 2, fieldOfView: T = 30.0) {
+
+    def width  = pixelWidth * antialiasing
+    def height = pixelHeight * antialiasing
+    def samplesPerPixel = Math.pow(antialiasing, 2)
 
     val aspectRatio: T = {
       val heightAsDecimal: T = height // So we change T to a float without changing code!
