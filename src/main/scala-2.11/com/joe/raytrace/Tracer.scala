@@ -6,15 +6,15 @@ import com.joe.raytrace.Tracer._
 
 object RayTracer extends App {
 
-  val lightSphere = Sphere(Vector(0.0, 0.0, -20.0), 1.0, Vector(1.0, 1.0, 1.0))
-  val red = Sphere(Vector(2.0, 2.0, -20.0), 1.0, Vector(1.0, 0.0, 0.0))
-  val yellow = Sphere(Vector(-2.0, -2.0, -20.0), 1.0, Vector(1.0, 1.0, 0.0))
-  val objects = Seq(lightSphere, red, yellow)
+  val red = Sphere(Vector(2.0, 2.0, -15.0), 1.0, Vector(1.0, 0.0, 0.0))
+  val white = Sphere(Vector(0.0, 0.0, -20.0), 1.0, Vector(1.0, 1.0, 1.0))
+  val yellow = Sphere(Vector(-2.0, -2.0, -25.0), 1.0, Vector(1.0, 1.0, 0.0))
+  val objects = Seq(white, red, yellow)
 
   val light = Light(Vector(10.0, 10.0, 5.0), Vector(0.9, 1.0, 0.9))
   val lights = Seq(light)
 
-  val camera = Camera(Ray(Vector(0.0, 0.0, 5.0), Vector(0.0, 0.0, -1.0)), 600, 600)
+  val camera = Camera(Ray(Vector(0.0, 0.0, 0.5), Vector(0.0, 0.0, -1.0)), 600, 600)
 
   val invWidth = 1.0 / camera.width
   val invHeight = 1.0 / camera.height
@@ -54,7 +54,7 @@ object RayTracer extends App {
 
     intersectionByDistance.headOption match {
       case Some(intersection) =>
-        val normal = (intersection.point - intersection.obj.center).normalize
+        val normal = (intersection.point - intersection.obj.position).normalize
         val lightRay = (light.location - normal).normalize
         val colour = Math.max(0, lightRay.dot(normal))
         intersection.obj.colour * light.colour * colour
@@ -100,42 +100,50 @@ object Tracer {
 
   case class Light(location: Vector, colour: Vector)
 
-  case class Sphere(center: Vector, radius: T, colour: Vector) {
+  case class Sphere(position: Vector, radius: T, colour: Vector) {
+
     val radiusSquared = radius * radius
+
     def intersects(ray: Ray): Option[Intersection] = {
-      val L = center - ray.origin
+      val L = position - ray.origin
       val tca = L.dot(ray.direction)
-      if (tca < 0) return None
-      val d2 = L.dot(L) - (tca * tca)
-      if (d2 > radiusSquared) return None
-      val thc = Math.sqrt(radiusSquared - d2)
-      var t0 = tca - thc
-      var t1 = tca + thc
+      if (tca < 0) None else {
+        val d2 = L.dot(L) - (tca * tca)
+        if (d2 > radiusSquared) None else {
+          val thc = Math.sqrt(radiusSquared - d2)
+          var t0 = tca - thc
+          var t1 = tca + thc
 
-      if (t0 > t1) {
-        val tmp = t0
-        t0 = t1
-        t1 = tmp
+          if (t0 > t1) {
+            val tmp = t0
+            t0 = t1
+            t1 = tmp
+          }
+
+          if (t0 < 0) {
+            t0 = t1 // if t0 is negative, let's use t1 instead
+            if (t0 < 0) return None // both t0 and t1 are negative
+          }
+
+          val t = t0
+          Some(Intersection(ray.pointAt(t), this))
+        }
       }
-
-      if (t0 < 0) {
-        t0 = t1 // if t0 is negative, let's use t1 instead
-        if (t0 < 0) return None // both t0 and t1 are negative
-      }
-
-      val t = t0
-
-      return Some(Intersection(ray.pointAt(t), this))
     }
+
   }
 
   case class Camera(position: Ray, width: Int, height: Int, fieldOfView: T = 30.0) {
+
     val aspectRatio: T = {
       val heightAsDecimal: T = height // So we change T to a float without changing code!
       width / heightAsDecimal
     }
+
     def origin = position.origin
+
     def direction = position.direction
+
   }
 
 }
