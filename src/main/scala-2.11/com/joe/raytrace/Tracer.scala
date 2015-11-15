@@ -1,7 +1,5 @@
 package com.joe.raytrace
 
-import com.joe.raytrace.Geometry.Sphere
-
 object Tracer {
 
   private def distanceTo(to: Vector)(from: Intersection): Double = {
@@ -15,7 +13,7 @@ object Tracer {
     intersectionByDistance.headOption match {
       case Some(intersection) =>
         val lightInput = scene.lights.map { light =>
-          val normal = (intersection.point - intersection.obj.position).normalize
+          val normal = intersection.obj.normal(intersection.point)
           val lightRay = (light.position - normal).normalize
           val intensity = Math.max(0, lightRay.dot(normal))
 
@@ -36,7 +34,7 @@ object Tracer {
     def pointAt(t: Double): Vector = origin + (direction * t)
   }
 
-  case class Intersection(point: Vector, obj: Sphere)
+  case class Intersection(point: Vector, obj: Shape)
 
 
 }

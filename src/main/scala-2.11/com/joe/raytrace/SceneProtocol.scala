@@ -1,6 +1,5 @@
 package com.joe.raytrace
 
-import com.joe.raytrace.Geometry.Sphere
 import com.joe.raytrace.Scene.{Camera, Light}
 import spray.json._
 

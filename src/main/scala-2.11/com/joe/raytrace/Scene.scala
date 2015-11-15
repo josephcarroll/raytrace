@@ -1,8 +1,6 @@
 package com.joe.raytrace
 
-import com.joe.raytrace.Geometry.Sphere
 import com.joe.raytrace.Scene.{Camera, Light}
-import com.joe.raytrace.Tracer._
 
 case class Scene(camera: Camera, ambientLight: Vector, backgroundColour: Vector, lights: Seq[Light], spheres: Seq[Sphere])
 
