@@ -16,7 +16,7 @@ object Main extends App {
   val image = for (x <- 0 until camera.width; y <- 0 until camera.height) yield {
     val xx = (2 * ((x + camera.origin.z) * invWidth) - 1) * angle * camera.aspectRatio
     val yy = (1 - 2 * ((y + camera.origin.z) * invHeight)) * angle
-    val rayDirection = Vector(xx, yy, camera.direction.z).normalize
+    val rayDirection = Vector(yy, xx, camera.direction.z).normalize
     trace(Ray(camera.origin, rayDirection))
   }
 
