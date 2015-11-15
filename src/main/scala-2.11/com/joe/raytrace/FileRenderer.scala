@@ -1,8 +1,6 @@
 package com.joe.raytrace
 
-import java.io.{FileOutputStream, File}
-
-import  com.joe.raytrace.Tracer._
+import java.io.{File, FileOutputStream}
 
 object FileRenderer {
 

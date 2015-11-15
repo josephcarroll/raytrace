@@ -2,7 +2,6 @@ package com.joe.raytrace
 
 import com.joe.raytrace.Geometry.Sphere
 import com.joe.raytrace.Scene.{Camera, Light}
-import com.joe.raytrace.Tracer.Vector
 import spray.json._
 
 object SceneProtocol extends DefaultJsonProtocol {
