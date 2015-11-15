@@ -1,0 +1,39 @@
+{
+  "camera": {
+    "origin": [0.0, 0.0, 0.4],
+    "direction": [0.0, 0.0, -1.0],
+    "pixelWidth": 600,
+    "pixelHeight": 600,
+    "antialiasing": 2,
+    "fieldOfView": 45
+  },
+  "backgroundColour": [0.1, 0.1, 0.1],
+  "lights": [
+    {
+      "colour": [0.9, 1.0, 0.9],
+      "position": [10.0, 10.0, 5.0]
+    }
+  ],
+  "spheres": [
+    {
+      "position": [2.0, 2.0, -15.0],
+      "radius": 1.0,
+      "colour": [1.0, 0.0, 0.0]
+    },
+    {
+      "position": [0.0, 0.0, -20.0],
+      "radius": 1.0,
+      "colour": [1.0, 1.0, 1.0]
+    },
+    {
+      "position": [-2.0, -2.0, -25.0],
+      "radius": 1.0,
+      "colour": [1.0, 1.0, 0.0]
+    },
+    {
+      "position": [0.0, 0.0, -50.0],
+      "colour": [0.4, 0.4, 0.4],
+      "radius": 8.0
+    }
+  ]
+}
