@@ -1,11 +1,13 @@
 package com.joe.raytrace
 
-import java.io.{File, FileOutputStream}
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 
 object FileRenderer {
 
   def renderToFile(width: Int, height: Int, pixels: Array[Vector]): Unit = {
-    val bytes = pixels.flatMap { colour =>
+    val bytes = pixels.map { colour =>
       if (colour.x > 1.0 || colour.y > 1.0 || colour.z > 1.0) {
         // This is to point out errors where our final pixel is too bright!
         Seq(0.toByte, 255.toByte, 0.toByte)
@@ -17,12 +19,18 @@ object FileRenderer {
       }
     }
 
-    val f = new File("/Users/Joe/Desktop/result.ppm")
+    val image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+    for (x <- 0 until width; y <- 0 until height) {
+      val i = y + (width * x)
+      val Seq(r, g, b) = bytes(i)
+      var rgb: Int = r
+      rgb = (rgb << 8) + g
+      rgb = (rgb << 8) + b
+      image.setRGB(x, y, rgb)
+    }
+    val f = new File("/Users/Joe/Desktop/result.png")
     if(!f.exists()) f.createNewFile()
-    val fos = new FileOutputStream(f)
-    fos.write(s"P6\n$width $height\n255\n".getBytes)
-    fos.write(bytes.toArray)
-    fos.close()
+    ImageIO.write(image, "bmp", f)
   }
 
 }
