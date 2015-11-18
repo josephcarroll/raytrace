@@ -27,3 +27,9 @@ case class Vector(x: Double, y: Double, z: Double) {
   }
 
 }
+
+object Vector {
+
+  val Zero = Vector(0.0, 0.0, 0.0)
+
+}

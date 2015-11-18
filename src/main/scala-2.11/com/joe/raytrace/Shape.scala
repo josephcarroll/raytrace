@@ -8,6 +8,23 @@ trait Shape {
   def normal(point: Vector): Vector
 }
 
+case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape {
+
+  override def normal(point: Vector): Vector = normal
+
+  override def intersects(ray: Ray): Option[Intersection] = {
+    val denominator = normal.dot(ray.direction)
+
+    if (denominator >= 1e-6) {
+      val t = (position - ray.origin).dot(normal) / denominator
+      if (t >= 0) Some(Intersection(ray.pointAt(t), this)) else None
+    } else {
+      None
+    }
+  }
+
+}
+
 case class Sphere(position: Vector, radius: Double, colour: Vector) extends Shape {
 
   override def normal(point: Vector): Vector = (point - position).normalize

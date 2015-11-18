@@ -5,9 +5,9 @@ import spray.json._
 
 object SceneProtocol extends DefaultJsonProtocol {
 
-  def load(location: String): Scene = {
+  def load(name: String): Scene = {
     import spray.json._
-    val jsonSource = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(location)).mkString
+    val jsonSource = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(s"scenes/$name.json")).mkString
     jsonSource.parseJson.convertTo[Scene]
   }
 
@@ -22,8 +22,10 @@ object SceneProtocol extends DefaultJsonProtocol {
   }
 
   implicit val SphereFormat = jsonFormat3(Sphere)
+  implicit val PlaneFormat  = jsonFormat3(Plane)
   implicit val LightFormat  = jsonFormat2(Light)
   implicit val CameraFormat = jsonFormat6(Camera)
-  implicit val SceneFormat  = jsonFormat5(Scene.apply)
-
+  implicit val SceneFormat  = jsonFormat[Camera, Vector, Vector, Seq[Light], Seq[Sphere], Seq[Plane], Scene](
+    Scene.apply, "camera", "ambientLight", "backgroundColour", "lights", "spheres", "planes"
+  )
 }

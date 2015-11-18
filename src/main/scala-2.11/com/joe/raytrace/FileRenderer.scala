@@ -6,7 +6,7 @@ import javax.imageio.ImageIO
 
 object FileRenderer {
 
-  def renderToFile(width: Int, height: Int, pixels: Array[Vector]): Unit = {
+  def renderToFile(width: Int, height: Int, pixels: Array[Vector], name: String): Unit = {
     val bytes = pixels.map { colour =>
       if (colour.x > 1.0 || colour.y > 1.0 || colour.z > 1.0) {
         // This is to point out errors where our final pixel is too bright!
@@ -28,9 +28,12 @@ object FileRenderer {
       rgb = (rgb << 8) + b
       image.setRGB(x, y, rgb)
     }
-    val f = new File("/Users/Joe/Desktop/result.png")
-    if(!f.exists()) f.createNewFile()
-    ImageIO.write(image, "bmp", f)
+    val f = new File(s"/Users/Joe/Desktop/Renders/$name.png")
+    if(!f.exists()) {
+      f.mkdirs()
+      f.createNewFile()
+    }
+    ImageIO.write(image, "png", f)
   }
 
 }
