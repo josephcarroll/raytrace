@@ -1,11 +1,10 @@
 {
   "camera": {
-    "origin": [0.0, 0.0, 7.0],
+    "origin": [0.0, 0.0, 3.0],
     "direction": [0.0, 0.0, -1.0],
     "pixelWidth": 600,
     "pixelHeight": 600,
-    "antialiasing": 2,
-    "fieldOfView": 45
+    "antialiasing": 2
   },
   "ambientLight": [0.1, 0.1, 0.1],
   "backgroundColour": [0.05, 0.05, 0.05],

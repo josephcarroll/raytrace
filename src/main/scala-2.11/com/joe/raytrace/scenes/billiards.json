@@ -1,40 +1,39 @@
 {
   "camera": {
-    "origin": [0.0, 0.0, 14.0],
+    "origin": [0.0, 0.0, 7.0],
     "direction": [0.0, 0.0, -1.0],
     "pixelWidth": 600,
     "pixelHeight": 600,
-    "antialiasing": 2,
-    "fieldOfView": 45
+    "antialiasing": 2
   },
   "ambientLight": [0.1, 0.1, 0.1],
   "backgroundColour": [0.05, 0.05, 0.05],
   "lights": [
     {
-      "colour": [0.4, 0.4, 0.4],
-      "position": [-2.0, -5.0, 10.0]
+      "colour": [0.7, 0.7, 0.7],
+      "position": [10.0, 10.0, 0.0]
     },
     {
       "colour": [0.7, 0.7, 0.7],
-      "position": [5.0, -1.0, 1.0]
+      "position": [-10.0, 10.0, 0.0]
     }
   ],
   "spheres": [
     {
-      "position": [-1.2, -1.0, -0.5],
+      "position": [-1.2, 0.5, 0.0],
       "radius": 1.0,
       "colour": [0.0, 1.0, 1.0]
     },
     {
-      "position": [1.2, -1.0, 0.0],
-      "radius": 1.0,
+      "position": [0.5, 0.3, 0.0],
+      "radius": 0.6,
       "colour": [1.0, 1.0, 0.0]
     }
   ],
   "planes": [
     {
       "position": [0.0, 0.0, 0.0],
-      "normal": [0.0, -1.0, -0.1],
+      "normal": [0.0, 1.0, -0.1],
       "colour": [0.7, 0.7, 0.7]
     }
   ]
