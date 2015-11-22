@@ -4,7 +4,10 @@ import com.joe.raytrace.Tracer._
 
 object Main extends App {
 
+  val totalBefore = System.currentTimeMillis()
   args.par.foreach(render)
+  val total = System.currentTimeMillis() - totalBefore
+  println(s"All rendered in ${total}ms")
 
   def render(name: String): Unit = {
     val before = System.currentTimeMillis()
@@ -14,11 +17,12 @@ object Main extends App {
 
     def trace = traceRay(scene) _
 
-    val image = for (y <- 0 until camera.height; x <- 0 until camera.width) yield {
+    val image = Array.fill(camera.width * camera.height)(Vector.Zero)
+    for (y <- 0 until camera.height; x <- 0 until camera.width) {
       val xOffset = 1.0 - (2.0 * (x / camera.width.toDouble))
       val yOffset = 1.0 - (2.0 * (y / camera.height.toDouble))
       val direction = camera.direction + Vector(yOffset, xOffset, 0.0)
-      trace(Ray(camera.origin, direction.normalize))
+      image(x + (camera.width * y)) = trace(Ray(camera.origin, direction.normalize))
     }
 
     val pixels = Array.fill(camera.pixelWidth * camera.pixelHeight)(Vector.Zero)
