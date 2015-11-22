@@ -33,7 +33,7 @@ object Tracer {
 
   private def blocked(scene: Scene, self: Shape, ray: Ray): Boolean = {
     val possibleBlockers = scene.shapes.filterNot(_ == self)
-    if (possibleBlockers.isEmpty) false else possibleBlockers.exists(_.intersects(ray).isDefined)
+    possibleBlockers.exists(_.intersects(ray).isDefined)
   }
 
   case class Ray(origin: Vector, direction: Vector) {
