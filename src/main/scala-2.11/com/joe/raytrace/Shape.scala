@@ -8,6 +8,11 @@ trait Shape {
   def normal(point: Vector): Vector
 }
 
+object Shape {
+  val MaxDistance = 10000.0
+  val MinDistance = 1e-06
+}
+
 case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape {
 
   override def normal(point: Vector): Vector = normal
@@ -15,9 +20,9 @@ case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape
   override def intersects(ray: Ray): Option[Intersection] = {
     val denominator = normal.dot(ray.direction)
 
-    if (denominator < 0) {
-      val t = -(position - ray.origin).dot(normal) / denominator
-      if (t < 10000.0) Some(Intersection(ray.pointAt(t), this)) else None
+    if (denominator < Shape.MinDistance) {
+      val t = -ray.origin.dot(normal) / denominator
+      if (t < Shape.MaxDistance) Some(Intersection(ray.pointAt(t), this)) else None
     } else {
       None
     }
@@ -31,29 +36,18 @@ case class Sphere(position: Vector, radius: Double, colour: Vector) extends Shap
 
   override def intersects(ray: Ray): Option[Intersection] = {
     val radiusSquared = radius * radius
+    val e = position - ray.origin
+    val a = ray.direction.dot(e)
+    val f = radiusSquared - e.dot(e) + (a * a)
 
-    val L = position - ray.origin
-    val tca = L.dot(ray.direction)
-    if (tca < 0) None else {
-      val d2 = L.dot(L) - (tca * tca)
-      if (d2 > radiusSquared) None else {
-        val thc = Math.sqrt(radiusSquared - d2)
-        var t0 = tca - thc
-        var t1 = tca + thc
-
-        if (t0 > t1) {
-          val tmp = t0
-          t0 = t1
-          t1 = tmp
-        }
-
-        if (t0 < 0) {
-          t0 = t1 // if t0 is negative, let's use t1 instead
-          if (t0 < 0) return None // both t0 and t1 are negative
-        }
-
-        val t = t0
+    if (f < Shape.MinDistance) {
+      None
+    } else {
+      val t = a - Math.sqrt(f)
+      if (t > Shape.MinDistance && t < Shape.MaxDistance) {
         Some(Intersection(ray.pointAt(t), this))
+      } else {
+        None
       }
     }
   }
