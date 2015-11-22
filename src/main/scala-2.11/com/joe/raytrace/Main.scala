@@ -10,18 +10,15 @@ object Main extends App {
     val before = System.currentTimeMillis()
 
     val scene = SceneProtocol.load(name)
+    val camera = scene.camera
+
     def trace = traceRay(scene) _
 
-    val camera = scene.camera
-    val invWidth = 1.0 / camera.width
-    val invHeight = 1.0 / camera.height
-    val angle = Math.tan(Math.PI * 0.5 * camera.fieldOfView / 180.0)
-
     val image = for (y <- 0 until camera.height; x <- 0 until camera.width) yield {
-      val xx = (2 * ((x + camera.origin.z) * invWidth) - 1) * angle * camera.aspectRatio
-      val yy = (1 - 2 * ((y + camera.origin.z) * invHeight)) * angle
-      val rayDirection = Vector(yy, xx, camera.direction.z).normalize
-      trace(Ray(camera.origin, rayDirection))
+      val xOffset = 1.0 - (2.0 * (x / camera.width.toDouble))
+      val yOffset = 1.0 - (2.0 * (y / camera.height.toDouble))
+      val direction = camera.direction + Vector(yOffset, xOffset, 0.0)
+      trace(Ray(camera.origin, direction.normalize))
     }
 
     val pixels = Array.fill(camera.pixelWidth * camera.pixelHeight)(Vector.Zero)

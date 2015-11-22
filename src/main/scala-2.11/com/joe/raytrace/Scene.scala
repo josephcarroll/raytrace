@@ -8,12 +8,11 @@ case class Scene(camera: Camera, ambientLight: Vector, backgroundColour: Vector,
 
 object Scene {
 
-  case class Camera(origin: Vector, direction: Vector, pixelWidth: Int, pixelHeight: Int, antialiasing: Int, fieldOfView: Double) {
+  case class Camera(origin: Vector, direction: Vector, pixelWidth: Int, pixelHeight: Int, antialiasing: Int) {
 
     def width  = pixelWidth * antialiasing
     def height = pixelHeight * antialiasing
     def samplesPerPixel = Math.pow(antialiasing, 2)
-    def aspectRatio = width / height.toDouble
 
   }
 

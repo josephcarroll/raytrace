@@ -15,9 +15,9 @@ case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape
   override def intersects(ray: Ray): Option[Intersection] = {
     val denominator = normal.dot(ray.direction)
 
-    if (denominator >= 1e-6) {
-      val t = (position - ray.origin).dot(normal) / denominator
-      if (t >= 0) Some(Intersection(ray.pointAt(t), this)) else None
+    if (denominator < 0) {
+      val t = -(position - ray.origin).dot(normal) / denominator
+      if (t < 10000.0) Some(Intersection(ray.pointAt(t), this)) else None
     } else {
       None
     }
