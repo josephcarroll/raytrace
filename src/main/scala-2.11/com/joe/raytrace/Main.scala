@@ -4,28 +4,27 @@ import com.joe.raytrace.Tracer._
 
 object Main extends App {
 
-  val totalBefore = System.currentTimeMillis()
-  args.par.foreach(render)
-  val total = System.currentTimeMillis() - totalBefore
-  println(s"All rendered in ${total}ms")
+  time("All processing") {
+    args.par.foreach(render)
+  }
 
   def render(name: String): Unit = {
-    val before = System.currentTimeMillis()
-
     val scene = SceneProtocol.load(name)
     val camera = scene.camera
 
     def trace = traceRay(scene) _
 
     val image = Array.fill(camera.width * camera.height)(Vector.Zero)
-    for (y <- 0 until camera.height; x <- 0 until camera.width) {
-      val xOffset = 1.0 - (2.0 * (x / camera.width.toDouble))
-      val yOffset = 1.0 - (2.0 * (y / camera.height.toDouble))
-      val direction = camera.direction + Vector(yOffset, xOffset, 0.0)
-      image(x + (camera.width * y)) = trace(Ray(camera.origin, direction.normalize))
+    time(name + " rendering") {
+      for (y <- 0 until camera.height; x <- 0 until camera.width) {
+        val xOffset = 1.0 - (2.0 * (x / camera.width.toDouble))
+        val yOffset = 1.0 - (2.0 * (y / camera.height.toDouble))
+        val direction = camera.direction + Vector(yOffset, xOffset, 0.0)
+        image(x + (camera.width * y)) = trace(Ray(camera.origin, direction.normalize))
+      }
     }
 
-    val pixels = Array.fill(camera.pixelWidth * camera.pixelHeight)(Vector.Zero)
+  val pixels = Array.fill(camera.pixelWidth * camera.pixelHeight)(Vector.Zero)
     for (y <- 0 until camera.height; x <- 0 until camera.width) {
       val realIndex = x + (camera.width * y)
       val index = (x / camera.antialiasing) + (camera.pixelWidth * (y / camera.antialiasing))
@@ -33,9 +32,15 @@ object Main extends App {
     }
     val finalPixels = pixels.map(_ / camera.samplesPerPixel)
 
-    val duration = System.currentTimeMillis() - before
-    println(s"$name rendered in ${duration}ms")
     FileRenderer.renderToFile(camera.pixelWidth, camera.pixelHeight, finalPixels, name)
+  }
+
+  private def time[T](name: String)(func: => T): T= {
+    val before = System.currentTimeMillis()
+    val result = func
+    val total = System.currentTimeMillis() - before
+    println(s"$name completed in ${total}ms")
+    result
   }
 
 }
