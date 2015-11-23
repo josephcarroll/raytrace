@@ -45,7 +45,9 @@ object Tracer {
     def pointAt(t: Double): Vector = origin + (direction * t)
   }
 
-  case class Intersection(point: Vector, distance: Double, obj: Shape)
+  case class Intersection(ray: Ray, distance: Double, obj: Shape) {
+    val point = ray.pointAt(distance)
+  }
 
 
 }
