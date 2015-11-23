@@ -22,7 +22,7 @@ case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape
 
     if (denominator < Shape.MinDistance) {
       val t = -ray.origin.dot(normal) / denominator
-      if (t < Shape.MaxDistance) Some(Intersection(ray.pointAt(t), this)) else None
+      if (t < Shape.MaxDistance) Some(Intersection(ray.pointAt(t), t, this)) else None
     } else {
       None
     }
@@ -45,7 +45,7 @@ case class Sphere(position: Vector, radius: Double, colour: Vector) extends Shap
     } else {
       val t = a - Math.sqrt(f)
       if (t > Shape.MinDistance && t < Shape.MaxDistance) {
-        Some(Intersection(ray.pointAt(t), this))
+        Some(Intersection(ray.pointAt(t), t, this))
       } else {
         None
       }
