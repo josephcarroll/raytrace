@@ -1,7 +1,6 @@
-package com.joe.raytrace.scenes
+package com.joe.raytrace
 
 import com.joe.raytrace.Tracer._
-import com.joe.raytrace.{Scene, Vector}
 
 
 object Renderer {
