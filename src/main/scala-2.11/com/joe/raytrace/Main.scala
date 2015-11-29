@@ -4,8 +4,19 @@ import com.joe.raytrace.Tracer._
 
 object Main extends App {
 
+  val (Array(widthInput, heightInput, antialiasingInput), inputs) = args.splitAt(3)
+
+  val antialiasing    = antialiasingInput.toInt
+  val pixelWidth      = widthInput.toInt
+  val pixelHeight     = heightInput.toInt
+  val width           = pixelWidth * antialiasing
+  val height          = pixelHeight * antialiasing
+  val samplesPerPixel = Math.pow(antialiasing, 2)
+
+  println(s"Sample resolution: ($width, $height). Effective Resolution: ($pixelWidth, $pixelHeight)")
+
   time("All processing") {
-    args.par.foreach(render)
+    inputs.par.foreach(render)
   }
 
   def render(name: String): Unit = {
@@ -14,25 +25,25 @@ object Main extends App {
 
     def trace = traceRay(scene) _
 
-    val image = Array.fill(camera.width * camera.height)(Vector.Zero)
+    val image = Array.fill(width * height)(Vector.Zero)
     time(name + " rendering") {
-      for (y <- 0 until camera.height; x <- 0 until camera.width) {
-        val xOffset = 1.0 - (2.0 * (x / camera.width.toDouble))
-        val yOffset = 1.0 - (2.0 * (y / camera.height.toDouble))
+      for (y <- 0 until height; x <- 0 until width) {
+        val xOffset = 1.0 - (2.0 * (x / width.toDouble))
+        val yOffset = 1.0 - (2.0 * (y / height.toDouble))
         val direction = camera.direction + Vector(yOffset, xOffset, 0.0)
-        image(x + (camera.width * y)) = trace(Ray(camera.origin, direction.normalize))
+        image(x + (width * y)) = trace(Ray(camera.origin, direction.normalize))
       }
     }
 
-  val pixels = Array.fill(camera.pixelWidth * camera.pixelHeight)(Vector.Zero)
-    for (y <- 0 until camera.height; x <- 0 until camera.width) {
-      val realIndex = x + (camera.width * y)
-      val index = (x / camera.antialiasing) + (camera.pixelWidth * (y / camera.antialiasing))
+  val pixels = Array.fill(pixelWidth * pixelHeight)(Vector.Zero)
+    for (y <- 0 until height; x <- 0 until width) {
+      val realIndex = x + (width * y)
+      val index = (x / antialiasing) + (pixelWidth * (y / antialiasing))
       pixels(index) += image(realIndex)
     }
-    val finalPixels = pixels.map(_ / camera.samplesPerPixel)
+    val finalPixels = pixels.map(_ / samplesPerPixel)
 
-    FileRenderer.renderToFile(camera.pixelWidth, camera.pixelHeight, finalPixels, name)
+    FileRenderer.renderToFile(pixelWidth, pixelHeight, finalPixels, name)
   }
 
   private def time[T](name: String)(func: => T): T= {
