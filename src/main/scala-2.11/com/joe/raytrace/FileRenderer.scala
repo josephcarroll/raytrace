@@ -19,14 +19,14 @@ object FileRenderer {
       }
     }
 
-    val image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
-    for (x <- 0 until width; y <- 0 until height) {
-      val i = y + (width * x)
+    val image = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB)
+    for (y <- 0 until height; x <- 0 until width) {
+      val i = x + (width * y)
       val Seq(r, g, b) = bytes(i)
       var rgb: Int = r
       rgb = (rgb << 8) + g
       rgb = (rgb << 8) + b
-      image.setRGB(x, y, rgb)
+      image.setRGB(y, x, rgb)
     }
     val f = new File(s"/Users/Joe/Desktop/Renders/$name.png")
     if(!f.exists()) {
