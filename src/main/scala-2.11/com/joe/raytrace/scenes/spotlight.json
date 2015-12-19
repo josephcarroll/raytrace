@@ -15,22 +15,34 @@
     {
       "position": [0.0, -1.72, 0.0],
       "radius": 0.5,
-      "colour": [1.0, 0.0, 0.0]
+      "material": {
+        "diffuseColour": [1.0, 0.0, 0.0],
+        "shininess": 1.0
+      }
     },
     {
       "position": [1.1, 0.0, 0.0],
       "radius": 0.5,
-      "colour": [0.0, 1.0, 0.0]
+      "material": {
+        "diffuseColour": [0.0, 1.0, 0.0],
+        "shininess": 1.0
+      }
     },
     {
       "position": [-1.1, 0.0, 0.0],
       "radius": 0.5,
-      "colour": [0.0, 0.0, 1.0]
+      "material": {
+        "diffuseColour": [0.0, 0.0, 1.0],
+        "shininess": 1.0
+      }
     },
     {
       "position": [0.0, 103.0, 0.0],
       "radius": 100.0,
-      "colour": [1.0, 1.0, 1.0]
+      "material": {
+        "diffuseColour": [1.0, 1.0, 1.0],
+        "shininess": 1.0
+      }
     }
   ],
   "planes": []

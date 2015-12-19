@@ -4,7 +4,7 @@ import com.joe.raytrace.Tracer._
 
 trait Shape {
   def intersects(ray: Ray): Option[Intersection]
-  def colour: Vector
+  def material: Material
   def normal(point: Vector): Vector
 }
 
@@ -13,7 +13,7 @@ object Shape {
   val MinDistance = 1e-06
 }
 
-case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape {
+case class Plane(position: Vector, normal: Vector, material: Material) extends Shape {
 
   override def normal(point: Vector): Vector = normal
 
@@ -30,7 +30,7 @@ case class Plane(position: Vector, normal: Vector, colour: Vector) extends Shape
 
 }
 
-case class Sphere(position: Vector, radius: Double, colour: Vector) extends Shape {
+case class Sphere(position: Vector, radius: Double, material: Material) extends Shape {
 
   override def normal(point: Vector): Vector = (point - position).normalize
 
