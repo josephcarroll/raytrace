@@ -1,13 +1,27 @@
 package com.joe.raytrace
 
+import java.nio.file.Path
+
 import com.joe.raytrace.Scene.{Camera, Light}
 import spray.json._
 
+import scala.io.Source
+
 object SceneProtocol extends DefaultJsonProtocol {
 
+  def load(path: Path): Scene = {
+    val source = io.Source.fromFile(path.toFile)
+    load(source)
+  }
+
   def load(name: String): Scene = {
+    val source = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(s"scenes/$name.json"))
+    load(source)
+  }
+
+  private def load(source: Source): Scene = {
     import spray.json._
-    val jsonSource = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(s"scenes/$name.json")).mkString
+    val jsonSource = source.mkString
     jsonSource.parseJson.convertTo[Scene]
   }
 
