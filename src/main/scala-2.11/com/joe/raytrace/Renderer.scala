@@ -12,13 +12,19 @@ object Renderer {
     val camera          = scene.camera
 
     def trace = traceRay(scene) _
-
     val image = Array.fill(width * height)(Vector.Zero)
+
+    val invWidth = 1 / width.toDouble
+    val invHeight = 1 / height.toDouble
+    val fov = 45
+    val aspectratio = width / height.toDouble
+    val angle = Math.tan(Math.PI * 0.5 * fov / 180.0)
+
     for (y <- (0 until height).par; x <- (0 until width).par) {
-      val xOffset = 1.0 - (2.0 * (x / width.toDouble))
-      val yOffset = 1.0 - (2.0 * (y / height.toDouble))
-      val direction = camera.direction + Vector(yOffset, xOffset, 0.0)
-      image(x + (width * y)) = trace(Ray(camera.origin, direction.normalize))
+      val xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio
+      val yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle
+      val direction =  Vector(camera.direction.x + yy, camera.direction.y + xx, -1).normalize
+      image(x + (width * y)) = trace(Ray(camera.origin, direction))
     }
 
     val pixels = Array.fill(pixelWidth * pixelHeight)(Vector.Zero)
