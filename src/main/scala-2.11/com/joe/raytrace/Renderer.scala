@@ -22,7 +22,7 @@ object Renderer {
     for (y <- (0 until height).par; x <- (0 until width).par) {
       val xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio
       val yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle
-      val direction =  Vector(camera.direction.x + yy, camera.direction.y + xx, -1).normalize
+      val direction =  Vector(camera.direction.x + xx, camera.direction.y + yy, -1).normalize
       image(x + (width * y)) = trace(Ray(camera.origin, direction))
     }
 
