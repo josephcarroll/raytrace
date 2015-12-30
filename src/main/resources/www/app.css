@@ -1,0 +1,70 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-top: 0;
+    font-family: -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
+}
+
+html,
+body,
+div {
+    margin: 0;
+    padding: 0;
+}
+
+.wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1em;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#header {
+    background: #cccccc;
+}
+ 
+#main {
+    background: #dddddd;    
+}
+
+#footer {
+    background: #cccccc;
+}
+
+#primary {
+    max-width: 400px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+#myCanvas {
+    height: 400px;
+}
+
+#source {
+    height: 300px;
+    width: 400px;
+}
+
+button {
+    border-radius: 4px;
+    background-color: #00adf9;
+    color: black;
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+button:disabled {
+    background-color: #7cd2f7;
+    color: #818181;
+    -webkit-box-shadow: none;
+}
+
+button:hover:enabled {
+    background-color: #00f77c;
+}

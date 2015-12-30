@@ -1,0 +1,39 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="app.css">
+    <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="app.js"></script>
+</head>
+<body onload="onLoad()">
+    <div id="header">
+        <div class="wrap">
+            <h1>raytrace</h1>
+        </div>
+    </div>
+    <div id="main">
+        <div class="wrap">
+            <div id="primary">
+                <p>
+                    <canvas id="myCanvas"></canvas>
+                </p>
+                <p>
+                    <button id="renderButton" onClick="render()">Render</button>
+                    <select id="antialiasing">
+                        <option>2x antialiasing</option>
+                        <option>4x antialiasing</option>
+                        <option>1x antialiasing</option>
+                    </select>
+                </p>
+                <p>
+                    <textarea id="source"></textarea>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="wrap">
+            Joe Carroll
+        </div>
+    </div>
+</body>
+</html>

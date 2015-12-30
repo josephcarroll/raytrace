@@ -7,7 +7,9 @@ import spray.json._
 
 import scala.io.Source
 
-object SceneProtocol extends DefaultJsonProtocol {
+object SceneProtocol extends SceneProtocol
+
+trait SceneProtocol extends DefaultJsonProtocol {
 
   def load(path: Path): Scene = {
     val source = io.Source.fromFile(path.toFile)
@@ -26,7 +28,10 @@ object SceneProtocol extends DefaultJsonProtocol {
   }
 
   implicit object VectorJsonFormat extends RootJsonFormat[Vector] {
-    def write(c: Vector) = throw new UnsupportedOperationException
+    def write(c: Vector) = {
+      JsArray(JsNumber(c.x), JsNumber(c.y), JsNumber(c.z))
+    }
+
     def read(value: JsValue) = value match {
       case JsArray(scala.collection.immutable.Vector(JsNumber(x), JsNumber(y), JsNumber(z))) =>
         Vector(x.doubleValue(), y.doubleValue(), z.doubleValue())
