@@ -7,8 +7,9 @@ var height;
 
 var payload = {
     "camera": {
-        "origin": [0.0, 0.0, 3.0],
-        "direction": [0.1, 0.0, -1.0]
+        "origin": [0.0, 0.0, 8.0],
+        "direction": [0.1, 0.0, -1.0],
+        "fov": 45
     },
     "ambientLight": [0.1, 0.1, 0.1],
     "backgroundColour": [0.05, 0.05, 0.05],

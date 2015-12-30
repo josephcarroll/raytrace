@@ -16,9 +16,8 @@ object Renderer {
 
     val invWidth = 1 / width.toDouble
     val invHeight = 1 / height.toDouble
-    val fov = 45
     val aspectratio = width / height.toDouble
-    val angle = Math.tan(Math.PI * 0.5 * fov / 180.0)
+    val angle = Math.tan(Math.PI * 0.5 * camera.fov / 180.0)
 
     for (y <- (0 until height).par; x <- (0 until width).par) {
       val xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio

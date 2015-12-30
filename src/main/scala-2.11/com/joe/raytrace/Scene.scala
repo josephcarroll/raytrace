@@ -8,7 +8,7 @@ case class Scene(camera: Camera, ambientLight: Vector, backgroundColour: Vector,
 
 object Scene {
 
-  case class Camera(origin: Vector, direction: Vector)
+  case class Camera(origin: Vector, direction: Vector, fov: Int)
 
   case class Light(position: Vector, colour: Vector)
 
