@@ -1,3 +1,4 @@
+var canvas;
 var ctx;
 var imageData;
 var data;
@@ -98,10 +99,14 @@ function render() {
 
 }
 
+function save() {
+    window.open(canvas.toDataURL("image/png"));
+}
+
 function onLoad() {
     $('#source').val(JSON.stringify(payload, null, '  '));
 
-    var canvas = $('#myCanvas').get(0);
+    canvas = $('#myCanvas').get(0);
 
     var container = $(canvas).parent();
     width = container.width();
