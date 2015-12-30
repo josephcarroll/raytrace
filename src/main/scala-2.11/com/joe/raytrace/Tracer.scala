@@ -28,9 +28,12 @@ object Tracer {
 
     val diffuseIntensity = Math.max(0.0, lightRay.dot(normal))
 
-    val reflectedRay = lightRay - (normal * 2.0 * normal.dot(lightRay)) // l - 2(n.l)n
-    val shininessPower = intersection.obj.material.shininess * 32.0
-    val specularIntensity = Math.pow(Math.max(0.0, viewerRay.direction.dot(reflectedRay)), shininessPower)
+    val shininess = intersection.obj.material.shininess
+    val specularIntensity = if (shininess > 0) {
+      val reflectedRay = lightRay - (normal * 2.0 * normal.dot(lightRay)) // l - 2(n.l)n
+      val shininessPower = shininess * 32.0
+      Math.pow(Math.max(0.0, viewerRay.direction.dot(reflectedRay)), shininessPower)
+    } else 0.0
 
     val inShade = blocked(scene, intersection.obj, Ray(intersection.point, lightRay))
     if(inShade) Vector.Zero
