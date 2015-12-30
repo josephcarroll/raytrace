@@ -23,7 +23,7 @@ object Renderer {
       val xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio
       val yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle
       val direction =  Vector(camera.direction.x + xx, camera.direction.y + yy, -1).normalize
-      image(x + (width * y)) = trace(Ray(camera.origin, direction))
+      image(y + (width * x)) = trace(Ray(camera.origin, direction))
     }
 
     val pixels = Array.fill(pixelWidth * pixelHeight)(Vector.Zero)
