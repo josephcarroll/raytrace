@@ -95,6 +95,10 @@ function render() {
             ctx.stroke();
 
             $('#renderButton').prop("disabled", false);
+        },
+        error: function(e) {
+            console.log(e);
+            $('#renderButton').prop("disabled", false);
         }
     });
 
