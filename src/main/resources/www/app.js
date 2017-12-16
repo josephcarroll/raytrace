@@ -63,7 +63,6 @@ function fill() {
 
 function render() {
     $('#renderButton').prop("disabled", true);
-    fill();
 
     var antialiasing = $('#antialiasing').val().substring(0, 1);
 
@@ -83,7 +82,7 @@ function render() {
                     var b = Math.round(current[2] * 255);
                     var a = 255;
 
-                    var targetIndex = (y + (height * x)) * 4;
+                    var targetIndex = sourceIndex * 4;
                     data[targetIndex    ] = r;
                     data[targetIndex + 1] = g;
                     data[targetIndex + 2] = b;
@@ -91,8 +90,6 @@ function render() {
                 }
             }
             ctx.putImageData(imageData, 0, 0);
-            ctx.rect(0, 0, width, height);
-            ctx.stroke();
 
             $('#renderButton').prop("disabled", false);
         },
