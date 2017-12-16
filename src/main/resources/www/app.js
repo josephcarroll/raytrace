@@ -6,55 +6,111 @@ var width;
 var height;
 
 var payload = {
-    "camera": {
-        "origin": [0.0, 0.0, 8.0],
-        "direction": [0.1, 0.0, -1.0],
-        "fov": 45
-    },
-    "ambientLight": [0.1, 0.1, 0.1],
-    "backgroundColour": [0.05, 0.05, 0.05],
-    "lights": [
-        {
-            "colour": [1.0, 1.0, 1.0],
-            "position": [4.0, -10.0, 8.0]
-        }
-    ],
-    "spheres": [
-        {
-            "position": [0.0, -1.72, 0.0],
-            "radius": 0.5,
-            "material": {
-                "diffuseColour": [1.0, 0.0, 0.0],
-                "shininess": 1.0
-            }
-        },
-        {
-            "position": [1.1, 0.0, 0.0],
-            "radius": 0.5,
-            "material": {
-                "diffuseColour": [0.0, 1.0, 0.0],
-                "shininess": 1.0
-            }
-        },
-        {
-            "position": [-1.1, 0.0, 0.0],
-            "radius": 0.5,
-            "material": {
-                "diffuseColour": [0.0, 0.0, 1.0],
-                "shininess": 1.0
-            }
-        },
-        {
-            "position": [0.0, 103.0, 0.0],
-            "radius": 100.0,
-            "material": {
-                "diffuseColour": [1.0, 1.0, 1.0],
-                "shininess": 1.0
-            }
-        }
-    ],
-    "planes": []
-};
+                    "camera": {
+                      "origin": [
+                        0,
+                        0,
+                        8
+                      ],
+                      "direction": [
+                        0.1,
+                        0,
+                        -1
+                      ],
+                      "fov": 45
+                    },
+                    "ambientLight": [
+                      0.1,
+                      0.1,
+                      0.1
+                    ],
+                    "backgroundColour": [
+                      0.05,
+                      0.05,
+                      0.05
+                    ],
+                    "lights": [
+                      {
+                        "colour": [
+                          1,
+                          1,
+                          1
+                        ],
+                        "position": [
+                          4,
+                          10,
+                          8
+                        ]
+                      }
+                    ],
+                    "spheres": [
+                      {
+                        "position": [
+                          0,
+                          -1.72,
+                          0
+                        ],
+                        "radius": 0.5,
+                        "material": {
+                          "diffuseColour": [
+                            1,
+                            0,
+                            0
+                          ],
+                          "shininess": 1
+                        }
+                      },
+                      {
+                        "position": [
+                          1.1,
+                          0,
+                          0
+                        ],
+                        "radius": 0.5,
+                        "material": {
+                          "diffuseColour": [
+                            0,
+                            1,
+                            0
+                          ],
+                          "shininess": 1
+                        }
+                      },
+                      {
+                        "position": [
+                          -1.1,
+                          0,
+                          0
+                        ],
+                        "radius": 0.5,
+                        "material": {
+                          "diffuseColour": [
+                            0,
+                            0,
+                            1
+                          ],
+                          "shininess": 1
+                        }
+                      },
+                      {
+                        "position": [
+                          0,
+                          -103,
+                          0
+                        ],
+                        "radius": 100,
+                        "material": {
+                          "diffuseColour": [
+                            1,
+                            1,
+                            1
+                          ],
+                          "shininess": 1
+                        }
+                      }
+                    ],
+                    "planes": []
+                  };
 
 function fill() {
     ctx.fillStyle = "rgba(1.0, 1.0, 1.0, 1.0)";

@@ -40,12 +40,12 @@ div {
 }
 
 #myCanvas {
-    height: 400px;
+    height:600px;
 }
 
 #source {
     height: 300px;
-    width: 400px;
+    width: 600px;
 }
 
 button {
