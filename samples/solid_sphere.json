@@ -1,0 +1,20 @@
+{
+  "camera": {
+    "origin": [0.0, 0.0, 3.0],
+    "direction": [0.0, 0.0, -1.0]
+  },
+  "ambientLight": [1.0, 0.0, 0.0],
+  "backgroundColour": [0.05, 0.05, 0.05],
+  "lights": [],
+  "spheres": [
+    {
+      "position": [0.0, 0.0, 0.0],
+      "radius": 1.0,
+      "material": {
+        "diffuseColour": [0.0, 0.0, 0.0],
+        "shininess": 0.0
+      }
+    }
+  ],
+  "planes": []
+}

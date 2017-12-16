@@ -5,7 +5,7 @@ import com.joe.raytrace.Tracer._
 
 object Renderer {
 
-  def render(pixelWidth: Int, pixelHeight: Int, antialiasing: Int)(scene: Scene): Array[Vector] = {
+  def render(pixelWidth: Int, pixelHeight: Int, antialiasing: Int)(scene: Scene): Array[Vector] = Timer.time("rendering") {
     val renderWidth     = pixelWidth * antialiasing
     val renderHeight    = pixelHeight * antialiasing
     val samplesPerPixel = Math.pow(antialiasing, 2)
