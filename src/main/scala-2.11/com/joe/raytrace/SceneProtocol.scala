@@ -17,7 +17,7 @@ trait SceneProtocol extends DefaultJsonProtocol {
   }
 
   def load(name: String): Scene = {
-    val source = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(s"scenes/$name.json"))
+    val source = io.Source.fromInputStream(Scene.getClass.getResourceAsStream(s"/samples/$name.json"))
     load(source)
   }
 
