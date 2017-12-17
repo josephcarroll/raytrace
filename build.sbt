@@ -2,19 +2,9 @@ name := "raytrace"
 
 version := "1.0"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.12.4"
 
-libraryDependencies ++= {
-  val akkaV = "2.3.9"
-  val sprayV = "1.3.2"
-  Seq(
-    "io.spray"            %%  "spray-can"     % sprayV,
-    "io.spray"            %%  "spray-routing" % sprayV,
-    "io.spray"            %%  "spray-json"    % sprayV,
-    "io.spray"            %%  "spray-testkit" % sprayV  % "test",
-    "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
-    "com.typesafe.akka"   %%  "akka-testkit"  % akkaV   % "test"
-  )
-}
+libraryDependencies += "com.typesafe.akka" %% "akka-http" % "10.0.11"
+libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.11"
 
 mainClass in (Compile, run) := Some("com.joe.raytrace.Main")
