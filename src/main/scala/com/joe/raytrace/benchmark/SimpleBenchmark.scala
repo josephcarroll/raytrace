@@ -4,10 +4,11 @@ import com.joe.raytrace.{Renderer, SceneProtocol}
 
 object SimpleBenchmark extends App with SceneProtocol {
 
-  val iterations = 10
+  val iterations   = 30
   val antialiasing = 2
   val pixelWidth   = 300
   val pixelHeight  = 300
+
   val scene = SceneProtocol.load("billiards")
 
   val timings = for (i <- 1 to iterations) yield {
@@ -17,8 +18,8 @@ object SimpleBenchmark extends App with SceneProtocol {
   }
 
   println()
-  println("-------------------------------------")
+  println("-----------------------------------")
   println(s"avg: ${timings.sum / timings.length}ms, min: ${timings.min}ms, max: ${timings.max}ms")
-  println("-------------------------------------")
+  println("-----------------------------------")
 
 }

@@ -4,21 +4,15 @@ import com.joe.raytrace.Scene.Light
 
 object Tracer {
 
-  private def distanceTo(to: Vector)(from: Intersection): Double = {
-    (to - from.point).length
-  }
-
   def traceRay(scene: Scene)(ray: Ray): Vector = {
-    val intersections = scene.shapes.flatMap(_.intersects(ray))
-
-    if (intersections.isEmpty) {
-      scene.backgroundColour
-    } else {
-      val intersection = intersections.minBy(distanceTo(ray.origin))
-      val lightInput = scene.lights.map(colourFromLight(intersection, scene, ray))
-      val lightSum = lightInput.foldLeft(Vector.Zero)(_ + _)
-      val emissionLight = intersection.obj.material.emissionColour
-      (scene.ambientLight + lightSum + emissionLight).cap(1.0)
+    minIntersectionOf(ray, scene.shapes) match {
+      case Some(intersection) =>
+        val lightInput = scene.lights.map(colourFromLight(intersection, scene, ray))
+        val lightSum = lightInput.foldLeft(Vector.Zero)(_ + _)
+        val emissionLight = intersection.obj.material.emissionColour
+        (scene.ambientLight + lightSum + emissionLight).cap(1.0)
+      case None =>
+        scene.backgroundColour
     }
   }
 
@@ -43,15 +37,32 @@ object Tracer {
   }
 
   private def blocked(scene: Scene, self: Shape, ray: Ray): Boolean = {
-    val possibleBlockers = scene.shapes.filterNot(_ == self).filter(_.castsShadow)
-    possibleBlockers.exists(_.intersects(ray).isDefined)
+    scene.shapes.exists(shape => shape != self && shape.castsShadow && shape.intersects(ray) != Double.MaxValue)
+  }
+
+  private def minIntersectionOf(ray: Ray, shapes: Array[Shape]): Option[Intersection] = {
+    var minIntersectionDistance = Double.MaxValue
+    var minIntersectionShape: Shape = null
+
+    for (shape <- shapes) {
+      val intersectionLength = shape.intersects(ray)
+      if (intersectionLength < Double.MaxValue) {
+        val distanceFromOrigin = (ray.pointAt(intersectionLength) - ray.origin).length
+        if (distanceFromOrigin < minIntersectionDistance) {
+          minIntersectionDistance = distanceFromOrigin
+          minIntersectionShape = shape
+        }
+      }
+    }
+
+    if (minIntersectionShape == null) None else Some(Intersection(ray, minIntersectionDistance, minIntersectionShape))
   }
 
   case class Ray(origin: Vector, direction: Vector) {
     def pointAt(t: Double): Vector = origin + (direction * t)
   }
 
-  case class Intersection(ray: Ray, distance: Double, obj: Shape) {
+  private case class Intersection(ray: Ray, distance: Double, obj: Shape) {
     val point = ray.pointAt(distance)
   }
 
