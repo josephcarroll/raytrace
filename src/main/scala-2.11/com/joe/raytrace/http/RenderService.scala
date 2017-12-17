@@ -15,22 +15,24 @@ class RenderServiceActor extends Actor with RenderService {
 trait RenderService extends HttpService with SprayJsonSupport with SceneProtocol {
 
   val route =
-    pathPrefix("api") {
-      path("render") {
-        post {
-          entity(as[Scene]) { scene =>
-            parameters('width.as[Int], 'height.as[Int], 'antialiasing.as[Int]) { (width, height, antialiasing) =>
-              complete {
-                Renderer.render(width, height, antialiasing)(scene)
+    compressResponseIfRequested() {
+      pathPrefix("api") {
+        path("render") {
+          post {
+            entity(as[Scene]) { scene =>
+              parameters('width.as[Int], 'height.as[Int], 'antialiasing.as[Int]) { (width, height, antialiasing) =>
+                complete {
+                  Renderer.render(width, height, antialiasing)(scene)
+                }
               }
             }
           }
         }
+      } ~
+        path("") {
+          getFromResource("www/index.html")
+        } ~ {
+        getFromResourceDirectory("www")
       }
-    } ~
-    path("") {
-      getFromResource("www/index.html")
-    } ~ {
-      getFromResourceDirectory("www")
     }
 }

@@ -6,6 +6,7 @@ trait Shape {
   def intersects(ray: Ray): Option[Intersection]
   def material: Material
   def normal(point: Vector): Vector
+  def castsShadow: Boolean = true
 }
 
 object Shape {

@@ -16,7 +16,8 @@ object Tracer {
       case Some(intersection) =>
         val lightInput = scene.lights.map(colourFromLight(intersection, scene, ray))
         val lightSum = lightInput.foldLeft(Vector.Zero)(_ + _)
-        (scene.ambientLight + lightSum).cap(1.0)
+        val emissionLight = intersection.obj.material.emissionColour
+        (scene.ambientLight + lightSum + emissionLight).cap(1.0)
       case None =>
         scene.backgroundColour
     }
@@ -41,7 +42,7 @@ object Tracer {
   }
 
   private def blocked(scene: Scene, self: Shape, ray: Ray): Boolean = {
-    val possibleBlockers = scene.shapes.filterNot(_ == self)
+    val possibleBlockers = scene.shapes.filterNot(_ == self).filter(_.castsShadow)
     possibleBlockers.exists(_.intersects(ray).isDefined)
   }
 

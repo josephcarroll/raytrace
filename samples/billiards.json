@@ -1,6 +1,6 @@
 {
   "camera": {
-    "origin": [0, 3, 10.0],
+    "origin": [0, 3, 35.0],
     "direction": [0, -0.1, -1.0],
     "fov": 45
   },
@@ -22,6 +22,7 @@
       "radius": 1.0,
       "material": {
         "diffuseColour": [1.0, 1.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 1.0
       }
     },
@@ -30,6 +31,7 @@
       "radius": 0.6,
       "material": {
         "diffuseColour": [1.0, 1.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 1.0
       }
     },
@@ -38,6 +40,7 @@
       "radius": 0.4,
       "material": {
         "diffuseColour": [1.0, 1.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 1.0
       }
     },
@@ -46,6 +49,7 @@
       "radius": 0.4,
       "material": {
         "diffuseColour": [1.0, 1.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 1.0
       }
     },
@@ -54,6 +58,7 @@
       "radius": 0.4,
       "material": {
         "diffuseColour": [1.0, 1.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 1.0
       }
     }
@@ -64,6 +69,7 @@
       "normal": [0.0, 1.0, 0.0],
       "material": {
         "diffuseColour": [0.6, 0.6, 0.6],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 0.0
       }
     }

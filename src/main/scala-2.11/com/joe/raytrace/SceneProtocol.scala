@@ -40,10 +40,12 @@ trait SceneProtocol extends DefaultJsonProtocol {
     }
   }
 
-  implicit val MaterialFormat = jsonFormat2(Material)
+  implicit val MaterialFormat = jsonFormat3(Material)
   implicit val SphereFormat   = jsonFormat3(Sphere)
   implicit val PlaneFormat    = jsonFormat3(Plane)
-  implicit val LightFormat    = jsonFormat2(Light)
+  implicit val LightFormat    = jsonFormat[Vector, Vector, Light](
+    Light.apply, "position", "colour"
+  )
   implicit val CameraFormat   = jsonFormat3(Camera)
   implicit val SceneFormat    = jsonFormat[Camera, Vector, Vector, Seq[Light], Seq[Sphere], Seq[Plane], Scene](
     Scene.apply, "camera", "ambientLight", "backgroundColour", "lights", "spheres", "planes"
