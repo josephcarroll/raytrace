@@ -10,16 +10,15 @@ object Tracer {
 
   def traceRay(scene: Scene)(ray: Ray): Vector = {
     val intersections = scene.shapes.flatMap(_.intersects(ray))
-    val intersectionByDistance = intersections.sortBy(distanceTo(ray.origin))
 
-    intersectionByDistance.headOption match {
-      case Some(intersection) =>
-        val lightInput = scene.lights.map(colourFromLight(intersection, scene, ray))
-        val lightSum = lightInput.foldLeft(Vector.Zero)(_ + _)
-        val emissionLight = intersection.obj.material.emissionColour
-        (scene.ambientLight + lightSum + emissionLight).cap(1.0)
-      case None =>
-        scene.backgroundColour
+    if (intersections.isEmpty) {
+      scene.backgroundColour
+    } else {
+      val intersection = intersections.minBy(distanceTo(ray.origin))
+      val lightInput = scene.lights.map(colourFromLight(intersection, scene, ray))
+      val lightSum = lightInput.foldLeft(Vector.Zero)(_ + _)
+      val emissionLight = intersection.obj.material.emissionColour
+      (scene.ambientLight + lightSum + emissionLight).cap(1.0)
     }
   }
 
