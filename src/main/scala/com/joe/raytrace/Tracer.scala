@@ -4,15 +4,26 @@ import com.joe.raytrace.Scene.Light
 
 object Tracer {
 
-  def traceRay(scene: Scene)(ray: Ray): Vector = {
+  def traceRay(scene: Scene, depth: Int = 2)(ray: Ray): Vector = {
     minIntersectionOf(ray, scene.shapes) match {
       case Some(intersection) =>
         val lightInput = scene.lights.map(colourFromLight(intersection, scene, ray))
         val lightSum = lightInput.foldLeft(Vector.Zero)(_ + _)
         val emissionLight = intersection.obj.material.emissionColour
-        (scene.ambientLight + lightSum + emissionLight).cap(1.0)
+        val reflection = colourFromReflection(intersection, scene, depth)
+        (scene.ambientLight + lightSum + emissionLight + reflection).cap(1.0)
       case None =>
         scene.backgroundColour
+    }
+  }
+
+  private def colourFromReflection(intersection: Intersection, scene: Scene, depth: Int): Vector = {
+    if (depth == 0) {
+      Vector.Zero
+    } else {
+      val normal = intersection.obj.normal(intersection.point)
+      val reflection = reflectionOf(intersection.ray.direction, normal)
+      traceRay(scene, depth - 1)(Ray(intersection.point, reflection)) * 0.2
     }
   }
 
@@ -22,7 +33,7 @@ object Tracer {
 
     val shininess = intersection.obj.material.shininess
     val specularIntensity = if (shininess > 0) {
-      val reflectedRay = lightRay - (normal * 2.0 * normal.dot(lightRay)) // l - 2(n.l)n
+      val reflectedRay = reflectionOf(lightRay, normal)
       val shininessPower = shininess * 32.0
       Math.pow(Math.max(0.0, viewerRay.direction.dot(reflectedRay)), shininessPower)
     } else 0.0
@@ -34,6 +45,10 @@ object Tracer {
       val diffuseIntensity = Math.max(0.0, lightRay.dot(normal))
       (intersection.obj.material.diffuseColour * light.colour * diffuseIntensity) + (light.colour * specularIntensity)
     }
+  }
+
+  private def reflectionOf(ray: Vector, normal: Vector): Vector = {
+    ray - (normal * 2.0 * normal.dot(ray)) // l - 2(n.l)n
   }
 
   private def blocked(scene: Scene, self: Shape, ray: Ray): Boolean = {

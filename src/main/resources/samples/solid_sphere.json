@@ -1,7 +1,8 @@
 {
   "camera": {
     "origin": [0.0, 0.0, 3.0],
-    "direction": [0.0, 0.0, -1.0]
+    "direction": [0.0, 0.0, -1.0],
+    "fov": 45
   },
   "ambientLight": [1.0, 0.0, 0.0],
   "backgroundColour": [0.05, 0.05, 0.05],
@@ -12,6 +13,7 @@
       "radius": 1.0,
       "material": {
         "diffuseColour": [0.0, 0.0, 0.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 0.0
       }
     }

@@ -22,6 +22,7 @@
       "radius": 1.0,
       "material": {
         "diffuseColour": [1.0, 0.0, 0.0],
+        "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 1.0
       }
     }
