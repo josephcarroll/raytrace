@@ -45,7 +45,7 @@ object Tracer {
     } else {
       val diffuseIntensity = Math.max(0.0, lightRay.dot(normal))
 
-      val diffuseColour = if (material.checkered && Math.round(intersection.point.x) % 2 == 0 ^ Math.round(intersection.point.z) % 2 == 0) {
+      val diffuseColour = if (material.checkered && (Math.round(intersection.point.x) % 2 == 0 ^ Math.round(intersection.point.z) % 2 == 0)) {
         material.diffuseColour * Vector.Dark
       } else {
         material.diffuseColour
