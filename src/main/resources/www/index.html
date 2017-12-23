@@ -4,7 +4,7 @@
     <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="app.js"></script>
 </head>
-<body onload="onLoad()">
+<body>
     <div id="header">
         <div class="wrap">
             <h1>raytrace</h1>
@@ -14,14 +14,16 @@
         <div class="wrap">
             <div id="primary">
                 <p>
-                    <canvas id="myCanvas"></canvas>
+                    <img id="renderImage" src=""/>
                 </p>
                 <p>
                     <button id="renderButton" onClick="render()">Render</button>
-                    <button onClick="save()">Save</button>
-                    <select id="antialiasing">
-                        <option>1x antialiasing</option>
+                    <button><a href="#" download="render.png">Save</a></button>
+                    <input id="widthInput" type="number" value="800"/>
+                    <input id="heightInput" type="number" value="600"/>
+                    <select id="antialiasingInput">
                         <option>2x antialiasing</option>
+                        <option>1x antialiasing</option>
                         <option>4x antialiasing</option>
                         <option>8x antialiasing</option>
                     </select>

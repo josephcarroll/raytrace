@@ -12,7 +12,7 @@ object Scene {
   case class Camera(origin: Vector, direction: Vector, fov: Int)
 
   case class Light(position: Vector, colour: Vector) extends Shape {
-    private val underlyingSphere = Sphere(position, 0.3, Material(Vector.One, Vector.One, 0.0))
+    private val underlyingSphere = Sphere(position, 0.3, Material(Vector.One, Vector.One, 0.0, checkered = false, 0.0))
     override def intersects(ray: Ray): Double = underlyingSphere.intersects(ray)
     override def normal(point: Vector): Vector = underlyingSphere.normal(point)
     override def material: Material = underlyingSphere.material

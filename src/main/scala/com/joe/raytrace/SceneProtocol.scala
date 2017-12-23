@@ -24,7 +24,7 @@ trait SceneProtocol extends DefaultJsonProtocol {
     }
   }
 
-  implicit val MaterialFormat = jsonFormat3(Material)
+  implicit val MaterialFormat = jsonFormat5(Material)
   implicit val SphereFormat   = jsonFormat3(Sphere)
   implicit val PlaneFormat    = jsonFormat3(Plane)
   implicit val LightFormat    = jsonFormat[Vector, Vector, Light](

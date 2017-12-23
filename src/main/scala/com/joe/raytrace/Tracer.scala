@@ -23,7 +23,7 @@ object Tracer {
     } else {
       val normal = intersection.obj.normal(intersection.point)
       val reflection = reflectionOf(intersection.ray.direction, normal)
-      traceRay(scene, depth - 1)(Ray(intersection.point, reflection)) * 0.2
+      traceRay(scene, depth - 1)(Ray(intersection.point, reflection)) * intersection.obj.material.reflectivity
     }
   }
 
@@ -31,7 +31,8 @@ object Tracer {
     val normal = intersection.obj.normal(intersection.point)
     val lightRay = (light.position - intersection.point).normalize
 
-    val shininess = intersection.obj.material.shininess
+    val material = intersection.obj.material
+    val shininess = material.shininess
     val specularIntensity = if (shininess > 0) {
       val reflectedRay = reflectionOf(lightRay, normal)
       val shininessPower = shininess * 32.0
@@ -43,7 +44,14 @@ object Tracer {
       Vector.Zero
     } else {
       val diffuseIntensity = Math.max(0.0, lightRay.dot(normal))
-      (intersection.obj.material.diffuseColour * light.colour * diffuseIntensity) + (light.colour * specularIntensity)
+
+      val diffuseColour = if (material.checkered && Math.round(intersection.point.x) % 2 == 0 ^ Math.round(intersection.point.z) % 2 == 0) {
+        material.diffuseColour * Vector.Dark
+      } else {
+        material.diffuseColour
+      }
+
+      (diffuseColour * light.colour * diffuseIntensity) + (light.colour * specularIntensity)
     }
   }
 

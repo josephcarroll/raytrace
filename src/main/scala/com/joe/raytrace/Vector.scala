@@ -27,6 +27,7 @@ case class Vector(x: Double, y: Double, z: Double) {
 object Vector {
 
   val Zero = Vector(0.0, 0.0, 0.0)
-  val One = Vector(1.0, 1.0, 1.0)
+  val One  = Vector(1.0, 1.0, 1.0)
+  val Dark = Vector(0.1, 0.1, 0.1)
 
 }

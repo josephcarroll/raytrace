@@ -14,7 +14,9 @@
       "material": {
         "diffuseColour": [0.0, 0.0, 0.0],
         "emissionColour": [0.0, 0.0, 0.0],
-        "shininess": 0.0
+        "shininess": 0.0,
+        "checkered": false,
+        "reflectivity": 0.2
       }
     }
   ],
