@@ -1,21 +1,21 @@
 {
   "camera": {
     "origin": [0, 1.8, 10.0],
-    "direction": [-0.4, -0.1, -1.0],
-    "fov": 45
+    "direction": [0, -0.1, -1.0],
+    "fov": 30
   },
   "ambientLight": [0.1, 0.1, 0.1],
   "backgroundColour": [0.1, 0.1, 0.1],
   "lights": [
     {
       "colour": [1.0, 1.0, 1.0],
-      "position": [5.0, 10.0, 5.0]
+      "position": [5.0, 10.0, 3.0]
     }
   ],
   "spheres": [
     {
-      "position": [-1.2, 1.0, -1.0],
-      "radius": 1.0,
+      "position": [-1.0, 0.8, -1.0],
+      "radius": 0.8,
       "material": {
         "diffuseColour": [1.0, 0, 0],
         "emissionColour": [0.0, 0.0, 0.0],
@@ -67,6 +67,17 @@
         "checkered": false,
         "reflectivity": 0.2
       }
+    },
+    {
+      "position": [-0.6, 0.2, 2.0],
+      "radius": 0.2,
+      "material": {
+        "diffuseColour": [1.0, 0.5, 0.0],
+        "emissionColour": [0.0, 0.0, 0.0],
+        "shininess": 1.0,
+        "checkered": false,
+        "reflectivity": 0.2
+      }
     }
   ],
   "planes": [
@@ -78,7 +89,7 @@
         "emissionColour": [0.0, 0.0, 0.0],
         "shininess": 0.0,
         "checkered": true,
-        "reflectivity": 0.2
+        "reflectivity": 0.8
       }
     }
   ]

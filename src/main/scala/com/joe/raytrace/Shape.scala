@@ -21,9 +21,10 @@ case class Plane(position: Vector, normal: Vector, material: Material) extends S
   override def intersects(ray: Ray): Double = {
     val denominator = normal.dot(ray.direction)
 
-    if (denominator < Shape.MinDistance) {
-      val t = -ray.origin.dot(normal) / denominator
-      if (t < Shape.MaxDistance) t else Double.MaxValue
+    if (Math.abs(denominator) > Shape.MinDistance) {
+      val centreVector = position - ray.origin
+      val t = centreVector.dot(normal) / denominator
+      if (t >= Shape.MinDistance) t else Double.MaxValue
     } else {
       Double.MaxValue
     }

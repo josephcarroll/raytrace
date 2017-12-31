@@ -18,12 +18,13 @@ object Tracer {
   }
 
   private def colourFromReflection(intersection: Intersection, scene: Scene, depth: Int): Vector = {
-    if (depth == 0) {
+    val materialReflectivity = intersection.obj.material.reflectivity
+    if (depth == 0 || materialReflectivity == 0) {
       Vector.Zero
     } else {
       val normal = intersection.obj.normal(intersection.point)
       val reflection = reflectionOf(intersection.ray.direction, normal)
-      traceRay(scene, depth - 1)(Ray(intersection.point, reflection)) * intersection.obj.material.reflectivity
+      traceRay(scene, depth - 1)(Ray(intersection.point, reflection)) * materialReflectivity
     }
   }
 
