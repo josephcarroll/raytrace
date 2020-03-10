@@ -11,7 +11,7 @@ object SimpleBenchmark extends App with SceneProtocol {
 
   val scene = SceneProtocol.load("billiards")
 
-  val timings = for (i <- 1 to iterations) yield {
+  val timings = for (_ <- 1 to iterations) yield {
     val before = System.currentTimeMillis()
     Renderer.render(pixelWidth, pixelHeight, antialiasing)(scene)
     System.currentTimeMillis() - before
