@@ -5,7 +5,6 @@ import cern.colt.map.OpenIntDoubleHashMap
 import org.apache.spark.mllib.linalg.SparseVector
 
 import scala.collection.JavaConverters._
-import scala.collection.mutable.ArrayBuffer
 
 object SparseVectorOps {
 
@@ -39,23 +38,30 @@ object SparseVectorOps {
         kernelWithIndex.foreach { case (kernelValue, kernelIndex) =>
           val currentValue = kernelValue * vectorValue
           val currentIndex = vectorIndex + kernelIndex
-          results.put(currentIndex, results.get(currentIndex) + currentValue)
+          if (currentValue != 0.0) {
+            val newValue = results.get(currentIndex) + currentValue
+            if (newValue != 0.0) {
+              results.put(currentIndex, newValue)
+            }
+          }
         }
       }
 
-      val indices = new ArrayBuffer[Int](results.size)
-      val values = new ArrayBuffer[Double](results.size)
+      val indices = Array.fill(results.size)(0)
+      val values = Array.fill(results.size)(0.0)
+      var currentIndex = 0
       results.forEachPair(new IntDoubleProcedure {
         override def apply(i: Int, v: Double): Boolean = {
           if (v != 0.0) {
-            indices += i
-            values += v
+            indices(currentIndex) = i
+            values(currentIndex) = v
+            currentIndex += 1
           }
           true
         }
       })
 
-      new SparseVector(resultLength, indices.toArray, values.toArray)
+      new SparseVector(resultLength, indices, values)
     }
 
   }

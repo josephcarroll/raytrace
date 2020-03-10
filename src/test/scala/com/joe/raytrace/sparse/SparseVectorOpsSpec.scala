@@ -28,23 +28,20 @@ class SparseVectorOpsSpec extends FlatSpec with Matchers {
   }
 
   it should "convolve a large array with random values" in {
-    val indices =  for (i <- 1 to (21000000 * 0.01).toInt) yield {
+    val indices =  for (_ <- 1 to (21000000 * 0.01).toInt) yield {
       (Math.random() * 21000000).toInt
     }
 
     val sparse = new SparseVector(21000000, indices.toArray, Array.fill(indices.length)(1.0))
-
-    println("starting!!!")
-    val before2 = System.currentTimeMillis()
-    sparse.convolve(Array.fill(3000)(0.0) ++ Array.fill(3000)(1.0))
-    val duration2 = System.currentTimeMillis() - before2
-    println(s"Took ${duration2}ms")
+    val convolved = sparse.convolveFast(Array.fill(3000)(0.0) ++ Array.fill(3000)(1.0))
+    convolved.size shouldEqual (21000000 + 6000 - 1)
   }
 
   private def check(input: Array[Double], kernel: Array[Double]): Unit = {
     val expectedResult = MathArrays.convolve(input, kernel)
-    val actualResult = asSparse(input).convolve(kernel).toArray
-    actualResult shouldEqual expectedResult
+    val inputAsSparse = asSparse(input)
+    val actualResultFast = inputAsSparse.convolveFast(kernel).toArray
+    actualResultFast shouldEqual expectedResult
   }
 
   private def asSparse(input: Array[Double]): SparseVector = {
