@@ -30,20 +30,21 @@ object Tracer {
 
   private def colourFromLight(intersection: Intersection, scene: Scene, viewerRay: Ray)(light: Light): Vector = {
     val normal = intersection.obj.normal(intersection.point)
-    val lightRay = (light.position - intersection.point).normalize
+    val lightRay = light.position - intersection.point
+    val normalizedLightRay = lightRay.normalize
 
     val material = intersection.obj.material
     val specularIntensity = if (material.shininess > 0.0) {
-      val reflectedRay = reflectionOf(lightRay, normal)
+      val reflectedRay = reflectionOf(normalizedLightRay, normal)
       val shininessPower = material.shininess * 32.0
       Math.pow(Math.max(0.0, viewerRay.direction.dot(reflectedRay)), shininessPower)
     } else 0.0
 
-    val inShade = blocked(scene, intersection.obj, Ray(intersection.point, lightRay))
+    val inShade = blocked(scene, intersection.obj, Ray(intersection.point, normalizedLightRay), lightRay.length)
     if(inShade) {
       Vector.Zero
     } else {
-      val diffuseIntensity = Math.max(0.0, lightRay.dot(normal))
+      val diffuseIntensity = Math.max(0.0, normalizedLightRay.dot(normal))
 
       val diffuseColour = if (material.checkered && (Math.round(intersection.point.x) % 2 == 0 ^ Math.round(intersection.point.z) % 2 == 0)) {
         material.diffuseColour * Vector.Dark
@@ -59,8 +60,8 @@ object Tracer {
     ray - (normal * 2.0 * normal.dot(ray)) // l - 2(n.l)n
   }
 
-  private def blocked(scene: Scene, self: Shape, ray: Ray): Boolean = {
-    scene.shapes.exists(shape => shape != self && shape.castsShadow && shape.intersects(ray) < Double.MaxValue)
+  private def blocked(scene: Scene, self: Shape, ray: Ray, lightIntersectionDistance: Double): Boolean = {
+    scene.shapes.exists(shape => shape != self && shape.castsShadow && shape.intersects(ray) < lightIntersectionDistance)
   }
 
   private def minIntersectionOf(ray: Ray, shapes: Array[Shape]): Option[Intersection] = {
