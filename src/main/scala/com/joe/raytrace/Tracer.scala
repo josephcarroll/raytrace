@@ -19,7 +19,7 @@ object Tracer {
 
   private def colourFromReflection(intersection: Intersection, scene: Scene, depth: Int): Vector = {
     val materialReflectivity = intersection.obj.material.reflectivity
-    if (depth == 0 || materialReflectivity == 0) {
+    if (depth == 0 || materialReflectivity == 0.0) {
       Vector.Zero
     } else {
       val normal = intersection.obj.normal(intersection.point)
@@ -33,10 +33,9 @@ object Tracer {
     val lightRay = (light.position - intersection.point).normalize
 
     val material = intersection.obj.material
-    val shininess = material.shininess
-    val specularIntensity = if (shininess > 0) {
+    val specularIntensity = if (material.shininess > 0.0) {
       val reflectedRay = reflectionOf(lightRay, normal)
-      val shininessPower = shininess * 32.0
+      val shininessPower = material.shininess * 32.0
       Math.pow(Math.max(0.0, viewerRay.direction.dot(reflectedRay)), shininessPower)
     } else 0.0
 
@@ -61,7 +60,7 @@ object Tracer {
   }
 
   private def blocked(scene: Scene, self: Shape, ray: Ray): Boolean = {
-    scene.shapes.exists(shape => shape != self && shape.castsShadow && shape.intersects(ray) != Double.MaxValue)
+    scene.shapes.exists(shape => shape != self && shape.castsShadow && shape.intersects(ray) < Double.MaxValue)
   }
 
   private def minIntersectionOf(ray: Ray, shapes: Array[Shape]): Option[Intersection] = {
@@ -82,12 +81,12 @@ object Tracer {
     if (minIntersectionShape == null) None else Some(Intersection(ray, minIntersectionDistance, minIntersectionShape))
   }
 
-  case class Ray(origin: Vector, direction: Vector) {
+  case class Ray(origin: Vector, direction: Vector, underlyingCoordinates: Option[(Int, Int)] = None) {
     def pointAt(t: Double): Vector = origin + (direction * t)
   }
 
   private case class Intersection(ray: Ray, distance: Double, obj: Shape) {
-    val point = ray.pointAt(distance)
+    val point: Vector = ray.pointAt(distance)
   }
 
 

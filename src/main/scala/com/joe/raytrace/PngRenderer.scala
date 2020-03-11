@@ -3,6 +3,7 @@ package com.joe.raytrace
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.util.Base64
+
 import javax.imageio.ImageIO
 
 object PngRenderer {
@@ -24,9 +25,9 @@ object PngRenderer {
     for (y <- 0 until height; x <- 0 until width) {
       val i = x + (width * y)
       val Seq(r, g, b) = bytes(i)
-      var rgb: Int = r
-      rgb = (rgb << 8) + g
-      rgb = (rgb << 8) + b
+      var rgb: Int = r & 0xFF
+      rgb = (rgb << 8) + (g & 0xFF)
+      rgb = (rgb << 8) + (b & 0xFF)
       image.setRGB(x, y, rgb)
     }
 
