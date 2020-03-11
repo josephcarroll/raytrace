@@ -1,0 +1,85 @@
+{
+  "camera": {
+    "origin": [0.0, 0.0, 10.0],
+    "direction": [0.0, 0.0, -1.0],
+    "fov": 30
+  },
+  "ambientLight": [0.0, 0.0, 0.0],
+  "backgroundColour": [0.05, 0.05, 0.05],
+  "lights": [
+    {
+      "colour": [0.5, 0.5, 0.5],
+      "position": [0.0, 0.0, 3.0]
+    },
+    {
+      "colour": [0.5, 0.5, 0.5],
+      "position": [0.0, 0.0, 0.0]
+    },
+    {
+      "colour": [0.5, 0.5, 0.5],
+      "position": [0.0, 0.0, 6.0]
+    },
+    {
+      "colour": [0.5, 0.5, 0.5],
+      "position": [0.0, 0.0, 9.0]
+    }
+  ],
+  "spheres": [],
+  "planes": [
+    {
+      "position": [0.0, 0.0, -1.0],
+      "normal": [0.0, 0.0, 1.0],
+      "material": {
+        "diffuseColour": [1.0, 1.0, 0.0],
+        "emissionColour": [0.0, 0.0, 0.0],
+        "shininess": 0.0,
+        "checkered": false,
+        "reflectivity": 0.2
+      }
+    },
+    {
+      "position": [0.0, -1.0, 0.0],
+      "normal": [0.0, 1.0, 0.0],
+      "material": {
+        "diffuseColour": [1.0, 0.0, 0.0],
+        "emissionColour": [0.0, 0.0, 0.0],
+        "shininess": 0.0,
+        "checkered": false,
+        "reflectivity": 0.2
+      }
+    },
+    {
+      "position": [0.0, 1.0, 0.0],
+      "normal": [0.0, -1.0, 0.0],
+      "material": {
+        "diffuseColour": [0.0, 1.0, 0.0],
+        "emissionColour": [0.0, 0.0, 0.0],
+        "shininess": 0.0,
+        "checkered": false,
+        "reflectivity": 0.2
+      }
+    },
+    {
+      "position": [-1.0, 0.0, 0.0],
+      "normal": [1.0, 0.0, 0.0],
+      "material": {
+        "diffuseColour": [0.0, 0.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
+        "shininess": 0.0,
+        "checkered": false,
+        "reflectivity": 0.2
+      }
+    },
+    {
+      "position": [1.0, 0.0, 0.0],
+      "normal": [-1.0, 0.0, 0.0],
+      "material": {
+        "diffuseColour": [0.0, 1.0, 1.0],
+        "emissionColour": [0.0, 0.0, 0.0],
+        "shininess": 0.0,
+        "checkered": false,
+        "reflectivity": 0.2
+      }
+    }
+  ]
+}
