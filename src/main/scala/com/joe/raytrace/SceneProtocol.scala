@@ -31,8 +31,8 @@ trait SceneProtocol extends DefaultJsonProtocol {
     Light.apply, "position", "colour"
   )
   implicit val CameraFormat: RootJsonFormat[Camera] = jsonFormat3(Camera)
-  implicit val SceneFormat: RootJsonFormat[Scene] = jsonFormat[Camera, Vector, Vector, Seq[Light], Seq[Sphere], Seq[Plane], Scene](
-    Scene.apply, "camera", "ambientLight", "backgroundColour", "lights", "spheres", "planes"
+  implicit val SceneFormat: RootJsonFormat[Scene] = jsonFormat[Camera, Boolean, Vector, Vector, Seq[Light], Seq[Sphere], Seq[Plane], Scene](
+    Scene.apply, "camera", "renderLights", "ambientLight", "backgroundColour", "lights", "spheres", "planes"
   )
 
   def load(path: Path): Scene = {

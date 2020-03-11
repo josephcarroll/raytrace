@@ -4,6 +4,7 @@
     "direction": [0.0, 0.0, -1.0],
     "fov": 45
   },
+  "renderLights": true,
   "ambientLight": [0.06, 0.06, 0.06],
   "backgroundColour": [0.05, 0.05, 0.05],
   "lights": [
